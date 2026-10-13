@@ -1,10 +1,8 @@
-'use strict';
-
-
+"use strict";
 
 /**
  * PRELOAD
- * 
+ *
  * loading will be end after document is loaded
  */
 
@@ -15,8 +13,6 @@ window.addEventListener("load", function () {
   document.body.classList.add("loaded");
 });
 
-
-
 /**
  * add event listener on multiple elements
  */
@@ -25,9 +21,7 @@ const addEventOnElements = function (elements, eventType, callback) {
   for (let i = 0, len = elements.length; i < len; i++) {
     elements[i].addEventListener(eventType, callback);
   }
-}
-
-
+};
 
 /**
  * NAVBAR
@@ -41,13 +35,11 @@ const toggleNavbar = function () {
   navbar.classList.toggle("active");
   overlay.classList.toggle("active");
   document.body.classList.toggle("nav-active");
-}
+};
 
 addEventOnElements(navTogglers, "click", toggleNavbar);
 
-
 // header and back to open n
-
 
 const header = document.querySelector("[data-header]");
 const backTopBtn = document.querySelector("[data-back-top-btn]");
@@ -63,7 +55,7 @@ const hideHeader = function () {
   }
 
   lastScrollPos = window.scrollY;
-}
+};
 
 window.addEventListener("scroll", function () {
   if (window.scrollY >= 50) {
@@ -72,18 +64,16 @@ window.addEventListener("scroll", function () {
     hideHeader();
   } else {
     header.classList.remove("active");
-    backTopBtn.classList.remove("active");  
+    backTopBtn.classList.remove("active");
   }
 });
-
-
 
 /**
  * HERO SLIDER
  */
 
-const heroSlider = document.querySelector("[data-hero-slider]");
-const heroSliderItems = document.querySelectorAll("[data-hero-slider-item]");
+const heroSlider = document.querySelector("[data-hero-slider]"); //ul
+const heroSliderItems = document.querySelectorAll("[data-hero-slider-item]"); //li
 const heroSliderPrevBtn = document.querySelector("[data-prev-btn]");
 const heroSliderNextBtn = document.querySelector("[data-next-btn]");
 
@@ -94,7 +84,7 @@ const updateSliderPos = function () {
   lastActiveSliderItem.classList.remove("active");
   heroSliderItems[currentSlidePos].classList.add("active");
   lastActiveSliderItem = heroSliderItems[currentSlidePos];
-}
+};
 
 const slideNext = function () {
   if (currentSlidePos >= heroSliderItems.length - 1) {
@@ -104,7 +94,7 @@ const slideNext = function () {
   }
 
   updateSliderPos();
-}
+};
 
 heroSliderNextBtn.addEventListener("click", slideNext);
 
@@ -116,7 +106,7 @@ const slidePrev = function () {
   }
 
   updateSliderPos();
-}
+};
 
 heroSliderPrevBtn.addEventListener("click", slidePrev);
 
@@ -130,40 +120,44 @@ const autoSlide = function () {
   autoSlideInterval = setInterval(function () {
     slideNext();
   }, 7000);
-}
+};
 
-addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], "mouseover", function () {
-  clearInterval(autoSlideInterval);
-});
+addEventOnElements(
+  [heroSliderNextBtn, heroSliderPrevBtn],
+  "mouseover",
+  function () {
+    clearInterval(autoSlideInterval);
+  },
+);
 
-addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], "mouseout", autoSlide);
+addEventOnElements(
+  [heroSliderNextBtn, heroSliderPrevBtn],
+  "mouseout",
+  autoSlide,
+);
 
 window.addEventListener("load", autoSlide);
 
+// Paralax Effect
 
-// Paralax Effect 
-
-const parallaxItems  = document.querySelectorAll("[data-parallax-item]");
+const parallaxItems = document.querySelectorAll("[data-parallax-item]");
 
 let x, y;
 
-window.addEventListener("mousemove" , (eventt) => {
-  x = (eventt.clientX / window.innerWidth * 10 ) -5;
-  y= (eventt.clientY / window.innerHeight * 10) - 5;
+window.addEventListener("mousemove", (eventt) => {
+  x = (eventt.clientX / window.innerWidth) * 10 - 5;
+  y = (eventt.clientY / window.innerHeight) * 10 - 5;
 
   // Reverse the number eg.  20 -> -20, -5 -> 5
 
-  x = x -(x*2);
-  y = y -(y*2);
+  x = x - x * 2;
+  y = y - y * 2;
 
-  for(let i=0, len = parallaxItems.length; i < len; i++){
+  for (let i = 0, len = parallaxItems.length; i < len; i++) {
     x = x * Number(parallaxItems[i].dataset.parallaxSpeed);
 
     y = y * Number(parallaxItems[i].dataset.parallaxSpeed);
-    
+
     parallaxItems[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`;
-
   }
-
-
 });
